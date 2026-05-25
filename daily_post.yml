@@ -1,0 +1,29 @@
+name: 每日自動發文
+
+on:
+  schedule:
+    # 每天台灣時間 08:00~10:00 之間隨機啟動（UTC 00:00）
+    # 腳本內部會再隨機延遲 0~60 分鐘，讓實際發文時間不固定
+    - cron: '0 0 * * *'
+  workflow_dispatch:   # 允許手動觸發（測試用）
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120   # 最多跑 2 小時（含隨機延遲）
+
+    steps:
+      - name: 取出程式碼
+        uses: actions/checkout@v4
+
+      - name: 安裝 Python 套件
+        run: |
+          pip install playwright python-docx
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: 執行自動發文
+        env:
+          ZY_USERNAME: ${{ secrets.ZY_USERNAME }}
+          ZY_PASSWORD: ${{ secrets.ZY_PASSWORD }}
+        run: python auto_post.py
