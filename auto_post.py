@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright
 # ── 設定（GitHub Actions 用 Secrets，本地測試可直接填） ──
 USERNAME = os.environ.get("ZY_USERNAME", "")
 PASSWORD = os.environ.get("ZY_PASSWORD", "")
-WORD_PATH = Path(__file__).parent / "文章排程表.docx"
+WORD_PATH = Path(__file__).parent / "文章排程表_6月.docx"
 LOGIN_URL = "https://zy-admin-official.jihua-admin.com/mIOMGjpkqP.php/index/login"
 ADD_URL   = "https://zy-admin-official.jihua-admin.com/mIOMGjpkqP.php/news/index/add"
 
@@ -29,7 +29,7 @@ def parse_word():
     # 檢查文件是否存在
     if not WORD_PATH.exists():
         log(f"❌ 錯誤：找不到 Word 檔案：{WORD_PATH}")
-        log("   請將 '文章排程表.docx' 上傳到仓库根目录")
+        log("   請將 '文章排程表_6月.docx' 上傳到仓库根目录")
         sys.exit(1)
     
     doc = Document(WORD_PATH)
