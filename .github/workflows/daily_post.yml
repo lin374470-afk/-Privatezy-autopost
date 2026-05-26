@@ -1,0 +1,27 @@
+name: 每日自動發文
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: 取出程式碼
+        uses: actions/checkout@v4
+
+      - name: 安裝 Python 套件
+        run: |
+          pip install playwright python-docx
+          playwright install chromium
+          playwright install-deps chromium
+
+      - name: 執行自動發文
+        env:
+          ZY_USERNAME: ${{ secrets.ZY_USERNAME }}
+          ZY_PASSWORD: ${{ secrets.ZY_PASSWORD }}
+        run: python auto_post.py
